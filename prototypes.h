@@ -32,13 +32,18 @@ class Dir {
         Dir(string, Person*);
         // destructor
         ~Dir();
+
+        void display_ppl();
+        void search_for_person(string&, bool&);
 };
 
 // helper functions
 int prompt_menu();
 string process_file(Dir*&, int&);
 void print_info(Dir*, int);
-
+void search_by_dir(Dir*, int);
+void search_by_name(Dir*, int);
+void make_new_entry(Dir*, int);
 
 
 
