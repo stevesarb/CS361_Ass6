@@ -13,7 +13,7 @@ int main() {
     if (DEBUG_MODE)
         print_info(dirs, num_dirs);
 
-    int dummy;
+    int changed = 0;
 
     while (input != 5) {
         // prompt menu
@@ -23,15 +23,21 @@ int main() {
         if (input == 1)
             search_by_dir(dirs, num_dirs);
         else if (input == 2)
-            search_by_name(dirs, num_dirs);
-        else if (input == 3)
+            search_by_name(dirs, num_dirs, 0);
+        else if (input == 3) {
             make_new_entry(dirs, num_dirs);
-        else if (input == 4)
-            dummy = 1;
+            changed = 1;
+        }
+        else if (input == 4) {
+            edit_entry(dirs, num_dirs);
+            changed = 1;
+        }
     }
 
     // update file
-
+    if (changed) 
+        overwrite_file(dirs, num_dirs, username);
+    
     if (dirs != NULL)
         delete [] dirs;
 

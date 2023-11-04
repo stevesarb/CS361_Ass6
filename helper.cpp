@@ -58,6 +58,8 @@ string process_file(Dir*& dirs, int& num_dirs) {
         }
     }
 
+    file.close();
+
     return username;
 }
 
@@ -92,9 +94,12 @@ void search_by_dir(Dir* dirs, int num_dirs) {
     dirs[input - 1].display_ppl();
 }
 
-void search_by_name(Dir* dirs, int num_dirs) {
+void search_by_name(Dir* dirs, int num_dirs, bool editMode) {
     // prompt for a name
-    cout << "\nEnter a name to search for: ";
+    if (editMode)
+        cout << "\nEnter the name of the entry you'd like to edit: ";
+    else
+        cout << "\nEnter a name to search for: ";
     string name;
     getline(cin, name);
 
@@ -127,7 +132,7 @@ void make_new_entry(Dir* dirs, int num_dirs) {
     getline(cin, inStr);
     int input = stoi(inStr);
 
-    // add new entry in appropriate location
+    // add new entry in existing directory
     if (input == 1) {
         // prompt for a directory
         for (int i = 0; i < num_dirs; i++) 
@@ -138,5 +143,36 @@ void make_new_entry(Dir* dirs, int num_dirs) {
         cout << "\nNew entry added to the " << dirs[input - 1].name << " directory.\n\n\n";
 
         // add entry to array
+        dirs[input - 1].add_person(newName, newDesc);
+    }
+}
+
+void edit_entry(Dir* dirs, int num_dirs) {
+    cout << "Would you like to search for the entry to edit by name or by directory?\n";
+    cout << "1. By name" << endl;
+    cout << "2. By directory" << endl;
+    cout << "\nPlease make a selection (1 or 2): ";
+    string inStr;
+    getline(cin, inStr);
+    int input = stoi(inStr);
+
+    if (input == 1)
+        search_by_name(dirs, num_dirs, 1);
+    // else if (input == 2)
+
+}
+
+void overwrite_file(Dir* dirs, int num_dirs, string& username) {
+    ofstream outFile("steven.txt");
+
+    outFile << username << endl;
+    outFile << num_dirs << endl;
+
+    for (int i = 0; i < num_dirs; i++) {
+        outFile << dirs[i].name << " " << dirs[i].num_ppl << endl;
+        for (int j = 0; j < dirs[i].num_ppl; j++) {
+            outFile << dirs[i].arr[j].name << endl;
+            outFile << dirs[i].arr[j].description << endl;
+        }
     }
 }
